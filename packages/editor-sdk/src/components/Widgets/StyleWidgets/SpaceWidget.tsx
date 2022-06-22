@@ -7,7 +7,14 @@ import { Grid, GridItem } from '@chakra-ui/react';
 
 const SPACE_DIRECTIONS = ['top', 'right', 'bottom', 'left'];
 
-export const SpaceWidget: React.FC<WidgetProps<{}>> = props => {
+type SpaceWidgetType = `${typeof CORE_VERSION}/${StyleWidgetName.Space}`;
+declare module '../../../types/widget' {
+  interface WidgetOptionsMap {
+    'core/v1/space': {};
+  }
+}
+
+export const SpaceWidget: React.FC<WidgetProps<SpaceWidgetType>> = props => {
   const { value, onChange } = props;
 
   return (
@@ -31,7 +38,7 @@ export const SpaceWidget: React.FC<WidgetProps<{}>> = props => {
             >
               <ExpressionWidget
                 {...props}
-                spec={mergeWidgetOptionsIntoSpec(props.spec, {
+                spec={mergeWidgetOptionsIntoSpec<'core/v1/expression'>(props.spec, {
                   compactOptions: { height: '32px' },
                 })}
                 value={value[idx]}
@@ -47,7 +54,7 @@ export const SpaceWidget: React.FC<WidgetProps<{}>> = props => {
   );
 };
 
-export default implementWidget({
+export default implementWidget<SpaceWidgetType>({
   version: CORE_VERSION,
   metadata: {
     name: StyleWidgetName.Space,
