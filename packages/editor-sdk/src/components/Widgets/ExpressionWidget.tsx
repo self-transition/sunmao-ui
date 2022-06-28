@@ -149,7 +149,7 @@ export const ExpressionWidget: React.FC<
     return getCode(value);
   }, [value]);
   const [defs, setDefs] = useState<any>();
-  const [evaledValue, setEvaledValue] = useState<any>(null);
+  const [evaledValue, setEvaledValue] = useState<any>({ value: null });
   const [error, setError] = useState<string | null>(null);
   const editorRef = useRef<ExpressionEditorHandle>(null);
   const validate = useMemo(() => ajv.compile(spec), [spec]);
@@ -157,7 +157,9 @@ export const ExpressionWidget: React.FC<
     (code: string) => {
       try {
         const value = getParsedValue(code, type);
-        const result = isExpression(code) ? services.stateManager.maskedEval(value) : value;
+        const result = isExpression(code)
+          ? services.stateManager.maskedEval(value)
+          : value;
 
         if (result instanceof ExpressionError) {
           throw result;
@@ -175,13 +177,19 @@ export const ExpressionWidget: React.FC<
               ).toLowerCase()}`
             );
           } else if (err.keyword === 'enum') {
-            throw new TypeError(`${err.message}: ${JSON.stringify((err.params as EnumParams).allowedValues)}`);
+            throw new TypeError(
+              `${err.message}: ${JSON.stringify(
+                (err.params as EnumParams).allowedValues
+              )}`
+            );
           } else {
             throw new TypeError(err.message);
           }
         }
 
-        setEvaledValue(result);
+        setEvaledValue({
+          value: result,
+        });
         setError(null);
       } catch (err) {
         setError(String(err));
