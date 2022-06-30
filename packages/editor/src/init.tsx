@@ -110,6 +110,7 @@ export function initSunmaoUIEditor(props: SunmaoUIEditorProps = {}) {
       });
     }, []);
 
+    eventBus.on('stateRefresh', onRefresh);
     return (
       <ChakraProvider theme={editorTheme}>
         <_Editor
