@@ -9,7 +9,7 @@ import {
   isUndefined,
   isNull,
   debounce,
-} from 'lodash-es';
+} from 'lodash';
 import { Type, Static } from '@sinclair/typebox';
 import { WidgetProps } from '../../types/widget';
 import { implementWidget } from '../../utils/widget';
